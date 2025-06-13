@@ -1,0 +1,4 @@
+[core]
+    remote = localstorage
+['remote "localstorage"']
+    url = C:/Users/hp/OneDrive/Documents/programs/data/End-to-End-Insurance-Risk-Analytics-Predictive-Modeling

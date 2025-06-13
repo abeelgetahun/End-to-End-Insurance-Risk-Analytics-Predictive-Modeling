@@ -1,0 +1,24 @@
+stages:
+  data_preparation:
+    cmd: python src/data/data_loader.py
+    deps:
+    - src/data/data_loader.py
+    - data/raw/MachineLearningRating_v3.txt
+    outs:
+    - data/processed/insurance_data.csv
+    
+  # feature_engineering:
+  #   cmd: python src/features/feature_engineering.py
+  #   deps:
+  #   - src/features/feature_engineering.py
+  #   - data/processed/cleaned_insurance_data.csv
+  #   outs:
+  #   - data/processed/features_insurance_data.csv
+    
+  # data_validation:
+  #   cmd: python src/data/validate_data.py
+  #   deps:
+  #   - src/data/validate_data.py
+  #   - data/processed/features_insurance_data.csv
+  #   metrics:
+  #   - reports/data_validation_metrics.json
