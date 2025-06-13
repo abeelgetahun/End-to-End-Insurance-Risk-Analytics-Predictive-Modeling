@@ -7,6 +7,7 @@ This project performs exploratory data analysis (EDA) and builds predictive mode
 - `notebooks/`: Jupyter notebooks for analysis
 - `src/`: Reusable Python modules
 - `reports/`: Visuals and summaries
+- `.dvc/`: data version control
 
 ## Goal
 Support AlphaCare in reducing claim losses by understanding customer behavior and predicting risk levels.
