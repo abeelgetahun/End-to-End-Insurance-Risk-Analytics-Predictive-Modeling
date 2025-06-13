@@ -2,8 +2,7 @@
 *.csv
 *.xlsx
 *.parquet
-data/raw/*
-!data/raw/.gitkeep
+ 
 
 # Python
 __pycache__/
