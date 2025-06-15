@@ -1,4 +1,8 @@
 [core]
-    remote = localstorage
+    remote = gdrive_remote
 ['remote "localstorage"']
     url = C:/Users/hp/OneDrive/Documents/programs/data/End-to-End-Insurance-Risk-Analytics-Predictive-Modeling
+['remote "gdrive_remote"']
+    url = gdrive://1DeGDu6Tz3uPUXlT0H9Z6qqg1yQR4JagL
+    gdrive_use_service_account = true
+    gdrive_service_account_json_file_path = C:\Users\hp\Downloads\praxis-gantry-463008-j4-e31ff8043cb7.json
