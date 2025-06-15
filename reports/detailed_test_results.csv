@@ -1,0 +1,8 @@
+Test,P-value,Significant (α=0.05),Decision,Business Impact
+Provincial Claim Frequency,0.000000,✅ Yes,Reject H₀,High
+Provincial Claim Severity,0.000006,✅ Yes,Reject H₀,High
+Zip Code Claim Frequency,0.000000,✅ Yes,Reject H₀,High
+Zip Code Margin Differences,0.396364,❌ No,Fail to Reject H₀,Low
+Gender Claim Frequency,0.951464,❌ No,Fail to Reject H₀,Low
+Gender Claim Severity,0.223513,❌ No,Fail to Reject H₀,Low
+Gender Premium Differences,0.000006,✅ Yes,Reject H₀,High

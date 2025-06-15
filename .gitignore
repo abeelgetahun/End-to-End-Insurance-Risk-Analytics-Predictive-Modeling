@@ -1,5 +1,6 @@
 # Data files
 *.csv
+!detailed_test_results.csv
 *.xlsx
 *.parquet
  
