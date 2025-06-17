@@ -1,0 +1,101 @@
+{
+  "model_name": "linear_regression",
+  "interpretation_summary": {
+    "top_5_features": [],
+    "shap_feature_impact": [
+      805.396931601078,
+      662.4942344689584,
+      1643.236330811293,
+      329.82907256174576,
+      1168.344970222432,
+      618.9588747348237,
+      20647.001543669845,
+      14381.622843899753,
+      4376.177242383458,
+      5021.956086575611,
+      3732.5813568515932,
+      6393.800293438393,
+      1324.323750871343,
+      479.85562662502144,
+      4616.380769386983,
+      17528.82186248982,
+      4188.222189338695,
+      4616.380769386974,
+      8534.815500920617,
+      627.2216037518975
+    ]
+  },
+  "detailed_analysis": {},
+  "business_insights": {
+    "key_risk_drivers": [],
+    "protective_factors": [
+      {
+        "feature": "Feature_1",
+        "effect": -50.20461813387546,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_2",
+        "effect": -3.03785463804501,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_3",
+        "effect": -46.50085571391833,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_5",
+        "effect": -33.631453460800905,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_6",
+        "effect": -17042.744009831848,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_8",
+        "effect": -734.356497916407,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_9",
+        "effect": -5021.713478045451,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_12",
+        "effect": -1324.323750871343,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_13",
+        "effect": -159.1411455605392,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_14",
+        "effect": -795.9277188598244,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_15",
+        "effect": -6459.418452042418,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      },
+      {
+        "feature": "Feature_17",
+        "effect": -795.9277188598228,
+        "business_meaning": "Feature impact requires domain expert interpretation"
+      }
+    ],
+    "business_recommendations": [],
+    "model_reliability": {
+      "feature_stability": "High",
+      "interpretability": "High",
+      "business_alignment": "High"
+    }
+  },
+  "recommendations": []
+}

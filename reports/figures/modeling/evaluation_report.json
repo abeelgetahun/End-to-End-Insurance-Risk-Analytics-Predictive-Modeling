@@ -1,0 +1,85 @@
+{
+  "summary": {
+    "linear_regression": {
+      "primary_metric": 33635.70992632487,
+      "secondary_metric": 0.29652579089675735
+    },
+    "decision_tree": {
+      "primary_metric": 39449.05276105512,
+      "secondary_metric": 0.03234589802671273
+    },
+    "random_forest": {
+      "primary_metric": 34373.18390862895,
+      "secondary_metric": 0.2653398108083559
+    },
+    "xgboost": {
+      "primary_metric": 36325.808254324016,
+      "secondary_metric": 0.17950194610085635
+    }
+  },
+  "detailed_results": {
+    "linear_regression": {
+      "mse": 1131360982.247869,
+      "rmse": 33635.70992632487,
+      "mae": 16442.540717951586,
+      "r2_score": 0.29652579089675735,
+      "mape": 308.9073595886023,
+      "loss_ratio_error": 0.03680796685861998,
+      "mean_prediction": 22407.619996112575,
+      "std_prediction": 20726.598547611527,
+      "mean_actual": 23263.9175004716,
+      "std_actual": 40102.9673366573,
+      "train_r2": 0.28343624403561873,
+      "train_rmse": 32469.042706005854,
+      "overfitting_score": -0.013089546861138612
+    },
+    "decision_tree": {
+      "mse": 1556227763.744511,
+      "rmse": 39449.05276105512,
+      "mae": 18073.130661658335,
+      "r2_score": 0.03234589802671273,
+      "mape": 272.7926940724874,
+      "loss_ratio_error": 0.14719344991456174,
+      "mean_prediction": 19839.62122504944,
+      "std_prediction": 27341.70459881613,
+      "mean_actual": 23263.9175004716,
+      "std_actual": 40102.9673366573,
+      "train_r2": 0.9324826164496823,
+      "train_rmse": 9966.665152040778,
+      "overfitting_score": 0.9001367184229696
+    },
+    "random_forest": {
+      "mse": 1181515772.0164278,
+      "rmse": 34373.18390862895,
+      "mae": 15903.473998386566,
+      "r2_score": 0.2653398108083559,
+      "mape": 262.05749603834676,
+      "loss_ratio_error": 0.057436477312787004,
+      "mean_prediction": 21927.720030749217,
+      "std_prediction": 22088.467294788494,
+      "mean_actual": 23263.9175004716,
+      "std_actual": 40102.9673366573,
+      "train_r2": 0.655204710931526,
+      "train_rmse": 22522.817992157852,
+      "overfitting_score": 0.3898649001231701
+    },
+    "xgboost": {
+      "mse": 1319564345.3299148,
+      "rmse": 36325.808254324016,
+      "mae": 16566.08629224295,
+      "r2_score": 0.17950194610085635,
+      "mape": 270.6565397831845,
+      "loss_ratio_error": 0.07200869065964055,
+      "mean_prediction": "21588.713",
+      "std_prediction": "25203.031",
+      "mean_actual": 23263.9175004716,
+      "std_actual": 40102.9673366573,
+      "train_r2": 0.8609944906158409,
+      "train_rmse": 14300.72556028354,
+      "overfitting_score": 0.6814925445149845
+    }
+  },
+  "recommendations": [
+    "Best performing model for claim severity prediction: linear_regression (RMSE: 33635.7099)"
+  ]
+}
