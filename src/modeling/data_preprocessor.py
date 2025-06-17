@@ -54,10 +54,16 @@ class DataPreprocessor:
                     df_processed[col] = imputer.fit_transform(df_processed[[col]]).flatten()
                     self.imputers[col] = imputer
                 elif missing_pct > 0.05:
-                    # Use KNN for high missing percentage
-                    knn_imputer = KNNImputer(n_neighbors=5)
-                    df_processed[col] = knn_imputer.fit_transform(df_processed[[col]]).flatten()
-                    self.imputers[col] = knn_imputer
+                    if df_processed[col].notnull().sum() > 0:
+                        # Use KNN only if at least some values are not NaN
+                        knn_imputer = KNNImputer(n_neighbors=5)
+                        df_processed[[col]] = knn_imputer.fit_transform(df_processed[[col]])
+                        self.imputers[col] = knn_imputer
+                    else:
+                        # Fallback to constant or drop the column
+                        df_processed[col] = 0  # or df_processed.drop(col, axis=1, inplace=True)
+                        self.logger.warning(f"Column '{col}' has all NaNs. Filled with 0.")
+
             
             # For categorical columns: mode imputation or 'Unknown' category
             for col in categorical_columns:
@@ -179,9 +185,10 @@ class DataPreprocessor:
         
         # Vehicle age
         if 'RegistrationYear' in df_engineered.columns:
-            current_year = df_engineered['TransactionMonth'].str[:4].astype(int).max()
+            df_engineered['TransactionMonth'] = pd.to_datetime(df_engineered['TransactionMonth'], errors='coerce')
+            current_year = df_engineered['TransactionMonth'].dt.year.max()
             df_engineered['VehicleAge'] = current_year - df_engineered['RegistrationYear']
-        
+
         # Claim to premium ratio (but we won't use this as a feature since it's leakage)
         # df_engineered['ClaimToPremiumRatio'] = df_engineered['TotalClaims'] / df_engineered['TotalPremium']
         
@@ -205,8 +212,11 @@ class DataPreprocessor:
         
         # Vehicle age
         if 'RegistrationYear' in df_engineered.columns:
-            current_year = df_engineered['TransactionMonth'].str[:4].astype(int).max()
+            df_engineered['TransactionMonth'] = pd.to_datetime(df_engineered['TransactionMonth'], errors='coerce')
+            current_year = df_engineered['TransactionMonth'].dt.year.max()
             df_engineered['VehicleAge'] = current_year - df_engineered['RegistrationYear']
+
+
         
         # Risk score based on vehicle characteristics
         df_engineered['RiskScore'] = 0

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_selection import SelectKBest, f_regression, f_classif, mutual_info_regression
 from sklearn.decomposition import PCA
+from sklearn.impute import SimpleImputer
 import logging
 
 class FeatureEngineer:
@@ -66,15 +67,43 @@ class FeatureEngineer:
                 labels=['Low_Power', 'Medium_Power', 'High_Power', 'Very_High_Power']
             )
         
-        # Vehicle value categories
         if 'CustomValueEstimate' in df_risk.columns:
-            value_quantiles = df_risk['CustomValueEstimate'].quantile([0.25, 0.5, 0.75])
-            df_risk['ValueCategory'] = pd.cut(
-                df_risk['CustomValueEstimate'],
-                bins=[0, value_quantiles[0.25], value_quantiles[0.5], 
-                      value_quantiles[0.75], df_risk['CustomValueEstimate'].max()],
-                labels=['Budget', 'Economy', 'Premium', 'Luxury']
-            )
+            value_series = df_risk['CustomValueEstimate'].dropna()
+
+            if value_series.nunique() < 4:
+                print("⚠️ Not enough unique values to compute quartiles. Using equal-width fallback.")
+                df_risk['ValueCategory'] = pd.cut(
+                    df_risk['CustomValueEstimate'],
+                    bins=4,
+                    labels=['Budget', 'Economy', 'Premium', 'Luxury'],
+                    include_lowest=True
+                )
+            else:
+                q25, q50, q75 = value_series.quantile([0.25, 0.5, 0.75])
+                bin_edges = [value_series.min(), q25, q50, q75, value_series.max()]
+                bin_edges = sorted(set(bin_edges))  # Remove duplicates
+                print(f"👉 Bin edges (deduplicated): {bin_edges}")
+
+                if len(bin_edges) == 5:
+                    df_risk['ValueCategory'] = pd.cut(
+                        df_risk['CustomValueEstimate'],
+                        bins=bin_edges,
+                        labels=['Budget', 'Economy', 'Premium', 'Luxury'],
+                        include_lowest=True
+                    )
+                else:
+                    print("⚠️ Not enough unique bin edges after deduplication. Using equal-width fallback.")
+                    df_risk['ValueCategory'] = pd.cut(
+                        df_risk['CustomValueEstimate'],
+                        bins=4,
+                        labels=['Budget', 'Economy', 'Premium', 'Luxury'],
+                        include_lowest=True
+                    )
+
+
+
+
+
         
         # Safety features score
         safety_features = ['AlarmImmobiliser', 'TrackingDevice']
@@ -155,13 +184,24 @@ class FeatureEngineer:
         
         # Excess level categories
         if 'ExcessSelected' in df_policy.columns:
+            df_policy['ExcessSelected'] = pd.to_numeric(df_policy['ExcessSelected'], errors='coerce')
             excess_quantiles = df_policy['ExcessSelected'].quantile([0.33, 0.67])
-            df_policy['ExcessLevel'] = pd.cut(
-                df_policy['ExcessSelected'],
-                bins=[0, excess_quantiles[0.33], excess_quantiles[0.67], 
-                      df_policy['ExcessSelected'].max()],
-                labels=['Low_Excess', 'Medium_Excess', 'High_Excess']
-            )
+            min_val = df_policy['ExcessSelected'].min()
+            max_val = df_policy['ExcessSelected'].max()
+            q1 = excess_quantiles[0.33]
+            q2 = excess_quantiles[0.67]
+            # Ensure bins are strictly increasing
+            bins = [min_val, q1, q2, max_val]
+            if len(set(bins)) == 4 and all(bins[i] < bins[i+1] for i in range(3)):
+                df_policy['ExcessLevel'] = pd.cut(
+                    df_policy['ExcessSelected'],
+                    bins=bins,
+                    labels=['Low_Excess', 'Medium_Excess', 'High_Excess'],
+                    include_lowest=True
+                )
+            else:
+                # Fallback: assign all to a single category or handle as needed
+                df_policy['ExcessLevel'] = 'Unknown_Excess'
         
         return df_policy
     
@@ -205,20 +245,25 @@ class FeatureEngineer:
             k: Number of features to select
             problem_type: 'regression' or 'classification'
         """
+        # Ensure all features are numeric
+        X_numeric = pd.get_dummies(X, drop_first=True)
+        # Drop columns that are all NaN
+        X_numeric = X_numeric.dropna(axis=1, how='all')
+        # Impute missing values
+        imputer = SimpleImputer(strategy='mean')
+        X_imputed = pd.DataFrame(imputer.fit_transform(X_numeric), columns=X_numeric.columns, index=X_numeric.index)
         if method == 'mutual_info':
             if problem_type == 'regression':
                 selector = SelectKBest(score_func=mutual_info_regression, k=k)
             else:
                 selector = SelectKBest(score_func=mutual_info_classif, k=k)
-        
-        elif method == 'f_test':
+        else:
             if problem_type == 'regression':
                 selector = SelectKBest(score_func=f_regression, k=k)
             else:
                 selector = SelectKBest(score_func=f_classif, k=k)
-        
-        X_selected = selector.fit_transform(X, y)
-        selected_features = X.columns[selector.get_support()].tolist()
+        X_selected = selector.fit_transform(X_imputed, y)
+        selected_features = X_imputed.columns[selector.get_support()]
         
         self.feature_selectors[method] = {
             'selector': selector,
@@ -228,7 +273,7 @@ class FeatureEngineer:
         
         self.logger.info(f"Selected {len(selected_features)} features using {method}")
         
-        return X_selected, selected_features
+        return pd.DataFrame(X_selected, columns=selected_features, index=X.index), list(selected_features)
     
     def create_pca_features(self, X, n_components=10):
         """
