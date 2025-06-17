@@ -9,3 +9,7 @@ jupyter>=1.0.0
 notebook>=6.5.0
 statsmodels>=0.14.0
 dvc
+
+shap 
+xgboost    
+joblib
