@@ -71,7 +71,7 @@ class FeatureEngineer:
             value_series = df_risk['CustomValueEstimate'].dropna()
 
             if value_series.nunique() < 4:
-                print("⚠️ Not enough unique values to compute quartiles. Using equal-width fallback.")
+                self.logger.warning("Not enough unique values to compute quartiles. Using equal-width fallback.")
                 df_risk['ValueCategory'] = pd.cut(
                     df_risk['CustomValueEstimate'],
                     bins=4,
